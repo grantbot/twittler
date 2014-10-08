@@ -64,21 +64,54 @@
     <a href="#" class="myButton">Tasty Tweets</a>
     <br><br><br>
 
-      $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
+    <div class = "tweets"></div>
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
-        }
+
+    <script>
+      $(document).ready(function(){
+        var $tweets = $('.tweets'); 
+
+
+        var formatDate = function(date) {
+          var formattedDate = new Date(date);
+          var d = formattedDate.getDate();
+          var m =  formattedDate.getMonth();
+          m += 1;  // JavaScript months are 0-11
+          var y = formattedDate.getFullYear();
+
+          return d + "/" + m + "/" + y;
+        };
+
+        var refreshLatestTweets = function (num_tweets) {
+          $tweets.html('');
+
+          var latest_tweet_index = streams.home.length - 1;
+          var curr_index = latest_tweet_index;
+
+          while(curr_index > latest_tweet_index - num_tweets) {
+            var tweet = streams.home[curr_index];
+            var $tweet = $('<div></div><br>');
+            $tweet.text('@' + tweet.user + ': ' + tweet.message + '  AT:  ' + tweet.created_at);
+            $tweet.appendTo($tweets);
+            curr_index -= 1;
+          }
+        };
+
+
+        
+        $(".myButton").click(function(){refreshLatestTweets(10)});
+
+
+
+
+
+        refreshLatestTweets(10);
 
       });
-
     </script>
+
+
+
+
   </body>
 </html>
